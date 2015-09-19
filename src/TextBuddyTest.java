@@ -327,5 +327,19 @@ public class TextBuddyTest {
         assertEquals(invalidOutput + System.lineSeparator(), output);
         outContent.reset();
     }
+    
+
+    @Test
+    public void sortEntriesTest(){   
+        ArrayList<String> entries = new ArrayList<String>();  
+        
+        String sortEmptyOutput = String.format("%s is empty, nothing to sort", testFileName);
+
+        TextBuddy textBuddy = new TextBuddy(testFileName);
+        textBuddy.setDataLines(entries);
+        
+        //empty list
+        assertEquals(sortEmptyOutput, textBuddy.sortEntries());
+    }
 
 }
