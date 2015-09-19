@@ -372,6 +372,7 @@ public class TextBuddyTest {
         TextBuddy.CommandObject validSortCommand = new TextBuddy.CommandObject("Sort");
         assertEquals(sortEmptyOutput, textBuddy.processSortCommand(validSortCommand));
         
+        //further cases can be found under sortEntiresTest()
     }
 
 }
