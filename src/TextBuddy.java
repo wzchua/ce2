@@ -350,8 +350,48 @@ public class TextBuddy {
         if(_dataLines.size() == 0){
             return String.format(NO_ENTRIES_TO_SEARCH_MSG, _fileName);
         } else {
-            return String.format(SEARCH_FAIL_MSG, keyword);
+            String printOutput;
+            ArrayList<String> searchResult = getListOfMatches(keyword);
+            
+            if(searchResult.size() == 0){
+                printOutput = String.format(SEARCH_FAIL_MSG, keyword);
+            } else {
+                printOutput = buildMultiLineSearchResultPrint(keyword,
+                        searchResult);
+            }
+            return printOutput;
         }
+    }
+
+    ArrayList<String> getListOfMatches(String keyword) {
+        ArrayList<String> matchedList = new ArrayList<String>();
+        
+        for(int i = 0; i < _dataLines.size(); i++){
+            String line = _dataLines.get(i);
+            if(line.matches(".*\\b" + keyword + "\\b.*")){
+                matchedList.add(line);
+            }
+        }
+        return matchedList;
+    }
+
+    private String buildMultiLineSearchResultPrint(String keyword,
+            ArrayList<String> searchResult) {
+        String printOutput;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format("word: \"%s\" found in %s entires", keyword, searchResult.size()));
+        stringBuilder.append(System.lineSeparator());
+        
+        for(int i = 0; i < searchResult.size(); i++){
+            String resultLine = formatDataLine(i, searchResult.get(i));
+            stringBuilder.append(resultLine);
+
+            if(i != searchResult.size() - 1){
+                stringBuilder.append(System.lineSeparator());
+            }
+        }
+        printOutput = stringBuilder.toString();
+        return printOutput;
     }
 
     String formatDataLine(int index, String dataLine) {        
