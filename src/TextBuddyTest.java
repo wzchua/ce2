@@ -349,6 +349,10 @@ public class TextBuddyTest {
         String sortedOutput = String.format("%s sorted", testFileName);
         
         assertEquals(sortedOutput, textBuddy.sortEntries());
+        
+        //check actual data
+        String[] sortedArray = {"apple", "pool", "zebra"};
+        assertArrayEquals(sortedArray, textBuddy.getDataLines().toArray());
    }
 
 }
