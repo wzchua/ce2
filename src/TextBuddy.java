@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -319,6 +320,7 @@ public class TextBuddy {
         if(_dataLines.size() == 0){
             return String.format(NO_ENTRIES_TO_SORT_MSG, _fileName);
         }  else {
+            Collections.sort(_dataLines);
             return String.format(SORTED_MSG, _fileName);
         }
     }
