@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,15 +9,18 @@ import java.util.Collections;
 import java.util.Scanner;
 
 /**
- * This class is used for interacting with a user to add, delete, display or clear entries.
- * It will also load from and save to a file.
- * The file is saved on exit.
+ * This class is used for interacting with a user to add, delete, display or
+ * clear entries. It will also load from and save to a file. The file is saved
+ * on exit.
  * 
- * Assumptions made: Single word commands only works if they are inputed as single words.
+ * Assumptions made: Single word commands only works if they are inputed as
+ * single words.
+ * 
  * @author Wz
  *
  */
 public class TextBuddy {
+    private static final String SEARCH_FOUND_MSG = "word: \"%s\" found in %s entries";
     private static final String SEARCH_FAIL_MSG = "%s not found";
     private static final String SORTED_MSG = "%s sorted";
     private static final String NO_ENTRIES_TO_SEARCH_MSG = "%s is empty, nothing to search";
@@ -30,13 +31,13 @@ public class TextBuddy {
     private static final String CLEAR_ENTRIES_MSG = "all content deleted from %1$s";
     private static final String DELETE_ENTRY_MSG = "deleted from %1$s: \"%2$s\"";
     private static final String ADD_ENTRY_MSG = "added to %1$s: \"%2$s\"";
-    private static final String ARGUMENT_ERROR_MSG = "Error, this program expects only 1 argument" 
+    private static final String ARGUMENT_ERROR_MSG = "Error, this program expects only 1 argument"
                                                     + " as the filename";
     private static final String INVALID_INDEX_MSG = "Invalid index";
     private static final String INVALID_COMMAND_PARAMETER_MSG = "Invalid command parameter";
     private static final String INVALID_COMMAND_MSG = "Invalid command";
     private static final String REQUEST_MSG = "command: ";
-    
+
     private static final String COMMAND_EXIT = "exit";
     private static final String COMMAND_ADD = "add";
     private static final String COMMAND_DELETE = "delete";
@@ -46,15 +47,15 @@ public class TextBuddy {
     private static final String COMMAND_SEARCH = "search";
 
     private final String WELCOME_MSG;
-    
+
     private String _fileName;
     private ArrayList<String> _dataLines;
     private Scanner _scanner;
     private boolean _canExit = false;
 
     /**
-     * This class is for processing command inputs into two elements: 
-     * the command and its parameter
+     * This class is for processing command inputs into two elements: the
+     * command and its parameter
      * 
      * @author Wz
      *
@@ -90,9 +91,10 @@ public class TextBuddy {
         int getParameterAsInteger() {
             return _commandParameterAsInteger;
         }
-        
+
         /**
          * Tries to convert the parameter into an Integer
+         * 
          * @return true if successful, else false;
          */
         boolean processParameterAsInteger() {
@@ -104,45 +106,45 @@ public class TextBuddy {
             }
         }
     }
-    
 
     /**
-     * Creates a new TextBuddy instance that stores the fileName, 
-     * initializes scanner and formats the welcome message
+     * Creates a new TextBuddy instance that stores the fileName, initializes
+     * scanner and formats the welcome message
      * 
-     * @param fileName - string of the file where data would be stored into
+     * @param fileName
+     *            - string of the file where data would be stored into
      */
     public TextBuddy(String fileName) {
         _fileName = fileName;
         _scanner = new Scanner(System.in);
         WELCOME_MSG = String.format(PRE_FORMATTED_WELCOME_MSG, _fileName);
-    }    
-    
-    public void loadData(){
-        _dataLines = getDataFromFile();        
     }
-    
-    public void setDataLines(ArrayList<String> data){
-        if(_dataLines == null){
+
+    public void loadData() {
+        _dataLines = getDataFromFile();
+    }
+
+    public void setDataLines(ArrayList<String> data) {
+        if (_dataLines == null) {
             _dataLines = new ArrayList<String>();
         }
         _dataLines.clear();
-        for(String line : data){
+        for (String line : data) {
             _dataLines.add(line);
         }
     }
-    
-    public void setDataLines(String[] data){
-        if(_dataLines == null){
+
+    public void setDataLines(String[] data) {
+        if (_dataLines == null) {
             _dataLines = new ArrayList<String>();
         }
         _dataLines.clear();
-        for(String line : data){
+        for (String line : data) {
             _dataLines.add(line);
         }
     }
-    
-    public ArrayList<String> getDataLines(){
+
+    public ArrayList<String> getDataLines() {
         return _dataLines;
     }
 
@@ -166,29 +168,30 @@ public class TextBuddy {
         _scanner.close();
         saveDataToFile(_dataLines);
     }
-    
+
     /**
      * This method stores the data from the file into an ArrayList<String>
      * Terminates the program if there is an exception in the filestream
+     * 
      * @return an array list of each line in the file
      */
     ArrayList<String> getDataFromFile() {
         ArrayList<String> dataLines = new ArrayList<String>();
         try {
             File file = new File(_fileName);
-            
+
             if (!file.exists()) {
                 file.createNewFile();
             }
-            
+
             FileInputStream fs = new FileInputStream(_fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(fs));
             String line;
-            
+
             while ((line = br.readLine()) != null) {
                 dataLines.add(line);
             }
-            
+
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,22 +199,25 @@ public class TextBuddy {
         }
         return dataLines;
     }
-    
+
     /**
-     * This methods takes the contents of an ArrayList<String> and saves it into the file
-     * Terminates the program if there is an exception in the filestream
+     * This methods takes the contents of an ArrayList<String> and saves it into
+     * the file Terminates the program if there is an exception in the
+     * filestream
+     * 
      * @param dataLines
-     *          is the array of data to be saved in the file
+     *            is the array of data to be saved in the file
      */
     void saveDataToFile(ArrayList<String> dataLines) {
         try {
             FileWriter fw = new FileWriter(_fileName);
             BufferedWriter bw = new BufferedWriter(fw);
-            
+
             for (String line : dataLines) {
                 bw.write(line);
                 bw.newLine();
             }
+            
             bw.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,7 +234,7 @@ public class TextBuddy {
 
     void processInput(String input) {
         CommandObject cmd = new CommandObject(input);
-        
+
         switch (cmd.getCommand()) {
             case COMMAND_EXIT :
                 setupForExiting();
@@ -245,12 +251,12 @@ public class TextBuddy {
             case COMMAND_DISPLAY :
                 printMessage(processDisplayCommand(cmd));
                 break;
-            case COMMAND_SORT:
+            case COMMAND_SORT :
                 printMessage(processSortCommand(cmd));
-            break;
-            case COMMAND_SEARCH:
+                break;
+            case COMMAND_SEARCH :
                 printMessage(processSearchCommand(cmd));
-            break;
+                break;
             default :
                 printMessage(INVALID_COMMAND_MSG);
         }
@@ -283,7 +289,7 @@ public class TextBuddy {
 
     String processDisplayCommand(CommandObject cmd) {
         if (cmd.hasParameters()) {
-            return INVALID_COMMAND_PARAMETER_MSG;            
+            return INVALID_COMMAND_PARAMETER_MSG;
         } else {
             return displayEntries();
         }
@@ -326,48 +332,49 @@ public class TextBuddy {
         for (int i = 0; i < length; i++) {
             stringBuilder.append(formatDataLine(i, _dataLines.get(i)));
 
-            if(i != length - 1){
+            if (i != length - 1) {
                 stringBuilder.append(System.lineSeparator());
             }
         }
         output = stringBuilder.toString();
         return output;
     }
-    
-    String sortEntries(){
-        if(_dataLines.size() == 0){
+
+    String sortEntries() {
+        if (_dataLines.size() == 0) {
             return String.format(NO_ENTRIES_TO_SORT_MSG, _fileName);
-        }  else {
+        } else {
             Collections.sort(_dataLines);
             return String.format(SORTED_MSG, _fileName);
         }
     }
-    String processSortCommand(CommandObject cmd){
-        if(cmd.hasParameters()){
-            return INVALID_COMMAND_PARAMETER_MSG;            
+
+    String processSortCommand(CommandObject cmd) {
+        if (cmd.hasParameters()) {
+            return INVALID_COMMAND_PARAMETER_MSG;
         } else {
             return sortEntries();
         }
     }
-    
-    String searchEntries(String keyword){
-        if(_dataLines.size() == 0){
+
+    String searchEntries(String keyword) {
+        if (_dataLines.size() == 0) {
             return String.format(NO_ENTRIES_TO_SEARCH_MSG, _fileName);
         } else {
             String printOutput;
             ArrayList<String> searchResult = getListOfMatches(keyword);
-            
-            if(searchResult.size() == 0){
+
+            if (searchResult.size() == 0) {
                 printOutput = String.format(SEARCH_FAIL_MSG, keyword);
             } else {
-                printOutput = buildMultiLineSearchResultPrint(keyword,
-                        searchResult);
+                printOutput = buildMultiLineSearchResultPrint(keyword, searchResult);
             }
             return printOutput;
         }
     }
-    String processSearchCommand(CommandObject cmd){
-        if(cmd.hasParameters()){
+
+    String processSearchCommand(CommandObject cmd) {
+        if (cmd.hasParameters()) {
             return searchEntries(cmd.getParameters());
         } else {
             return INVALID_COMMAND_PARAMETER_MSG;
@@ -376,28 +383,29 @@ public class TextBuddy {
 
     ArrayList<String> getListOfMatches(String keyword) {
         ArrayList<String> matchedList = new ArrayList<String>();
-        
-        for(int i = 0; i < _dataLines.size(); i++){
+
+        for (int i = 0; i < _dataLines.size(); i++) {
             String line = _dataLines.get(i);
-            if(line.matches(".*\\b" + keyword + "\\b.*")){
+            if (line.matches(".*\\b" + keyword + "\\b.*")) {
                 matchedList.add(line);
             }
         }
         return matchedList;
     }
 
-    private String buildMultiLineSearchResultPrint(String keyword,
-            ArrayList<String> searchResult) {
+    private String buildMultiLineSearchResultPrint(String keyword, ArrayList<String> searchResult) {
         String printOutput;
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("word: \"%s\" found in %s entires", keyword, searchResult.size()));
-        stringBuilder.append(System.lineSeparator());
         
-        for(int i = 0; i < searchResult.size(); i++){
+        stringBuilder.append(String.format(SEARCH_FOUND_MSG, keyword, searchResult.size()));
+        stringBuilder.append(System.lineSeparator());
+
+        for (int i = 0; i < searchResult.size(); i++) {
             String resultLine = formatDataLine(i, searchResult.get(i));
+            
             stringBuilder.append(resultLine);
 
-            if(i != searchResult.size() - 1){
+            if (i != searchResult.size() - 1) {
                 stringBuilder.append(System.lineSeparator());
             }
         }
@@ -405,7 +413,7 @@ public class TextBuddy {
         return printOutput;
     }
 
-    String formatDataLine(int index, String dataLine) {        
+    String formatDataLine(int index, String dataLine) {
         String formatted = String.format(DATA_LINE_MSG, (index + 1), dataLine);
         return formatted;
     }
@@ -417,7 +425,6 @@ public class TextBuddy {
         } else {
             printMessage(ARGUMENT_ERROR_MSG);
         }
-
     }
 
     public static void printMessage(String message) {
