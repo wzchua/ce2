@@ -330,7 +330,9 @@ public class TextBuddyTest {
         
         //sort input
         String sortedOutput = String.format("%s sorted", testFileName); 
+        String[] unsortedArray = { "apple", "zebra", "pool" };
         String[] sortedArray = { "apple", "pool", "zebra" };
+        textBuddy.setDataLines(unsortedArray);
         textBuddy.processInput("Sort");
         output = outContent.toString();
         assertEquals(sortedOutput + System.lineSeparator(), output);
