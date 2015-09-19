@@ -307,21 +307,29 @@ public class TextBuddy {
     String displayEntries() {
         int length = _dataLines.size();
         String output;
-        StringBuilder stringBuilder = new StringBuilder();
         if (length == 0) {
             output = String.format(NO_ENTRIES_MSG, _fileName);
         } else {
-            for (int i = 0; i < length; i++) {
-                stringBuilder.append(formatDataLine(i, _dataLines.get(i)));
-
-                if(i != length - 1){
-                    stringBuilder.append(System.lineSeparator());
-                }
-            }
-            output = stringBuilder.toString();
+            output = buildMultiLineDisplayPrint();
         }
         return output;
     }
+
+    private String buildMultiLineDisplayPrint() {
+        String output;
+        int length = _dataLines.size();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(formatDataLine(i, _dataLines.get(i)));
+
+            if(i != length - 1){
+                stringBuilder.append(System.lineSeparator());
+            }
+        }
+        output = stringBuilder.toString();
+        return output;
+    }
+    
     String sortEntries(){
         if(_dataLines.size() == 0){
             return String.format(NO_ENTRIES_TO_SORT_MSG, _fileName);
