@@ -426,6 +426,21 @@ public class TextBuddyTest {
         TextBuddy.CommandObject invalidSortCommand = new TextBuddy.CommandObject("Search 345143");
         assertEquals(invalidCommandOutput, textBuddy.processSearchCommand(invalidSortCommand));
 
+        //populate list
+        entries.add("fox on a field");
+        entries.add("People riding horses on a field");
+        entries.add("apples");
+        entries.add("green apples");
+        textBuddy.setDataLines(entries);
+        
+        //valid command, non-empty data
+        String foundOutput = "word: \"field\" found in 2 entires" + System.lineSeparator()
+                + "1. fox on a field" + System.lineSeparator() 
+                +"2. People riding horses on a field";
+        TextBuddy.CommandObject validSearchCommand = new TextBuddy.CommandObject("Search field");
+        assertEquals(foundOutput, textBuddy.processSortCommand(validSearchCommand));
+        
+        
     }
 
 }
