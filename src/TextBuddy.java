@@ -325,7 +325,11 @@ public class TextBuddy {
         }
     }
     String processSortCommand(CommandObject cmd){
-        return INVALID_COMMAND_PARAMETER_MSG;
+        if(cmd.hasParameters()){
+            return INVALID_COMMAND_PARAMETER_MSG;            
+        } else {
+            return sortEntries();
+        }
     }
 
     String formatDataLine(int index, String dataLine) {        
