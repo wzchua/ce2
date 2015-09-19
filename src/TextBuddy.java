@@ -344,7 +344,7 @@ public class TextBuddy {
         if (_dataLines.size() == 0) {
             return String.format(NO_ENTRIES_TO_SORT_MSG, _fileName);
         } else {
-            Collections.sort(_dataLines);
+            Collections.sort(_dataLines, String.CASE_INSENSITIVE_ORDER);
             return String.format(SORTED_MSG, _fileName);
         }
     }
