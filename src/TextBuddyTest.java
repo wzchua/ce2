@@ -340,6 +340,7 @@ public class TextBuddyTest {
         
         //empty list
         assertEquals(sortEmptyOutput, textBuddy.sortEntries());
+        assertEquals(0, textBuddy.getDataLines().size());
     }
 
 }
