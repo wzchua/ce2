@@ -407,6 +407,12 @@ public class TextBuddyTest {
         //non-empty, not found
         String notFoundOutput = "cat not found";
         assertEquals(notFoundOutput, textBuddy.searchEntries("cat"));
+        
+        //non-empty, found
+        String foundOutput = "word: \"field\" found in 2 entires" + System.lineSeparator()
+                            + "1. fox on a field" + System.lineSeparator() 
+                            +"2. People riding horses on a field";
+        assertEquals(foundOutput, textBuddy.searchEntries("field"));
     }
 
 }
