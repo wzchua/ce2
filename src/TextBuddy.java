@@ -324,6 +324,9 @@ public class TextBuddy {
             return String.format(SORTED_MSG, _fileName);
         }
     }
+    String processSortCommand(CommandObject cmd){
+        return "";
+    }
 
     String formatDataLine(int index, String dataLine) {        
         String formatted = String.format(DATA_LINE_MSG, (index + 1), dataLine);

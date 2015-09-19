@@ -275,6 +275,7 @@ public class TextBuddyTest {
         textBuddy.clearEntries();
         assertEquals(displayEmptyOutput, textBuddy.processDisplayCommand(validDisplayCommand));        
     }
+    
     @Test
     public void processInputTest(){
         ArrayList<String> entries = new ArrayList<String>();
@@ -354,5 +355,17 @@ public class TextBuddyTest {
         String[] sortedArray = {"apple", "pool", "zebra"};
         assertArrayEquals(sortedArray, textBuddy.getDataLines().toArray());
    }
+    
+    @Test
+    public void processSortCommandTest(){
+        ArrayList<String> entires = new ArrayList<String>();
+        TextBuddy textBuddy = new TextBuddy(testFileName);
+        textBuddy.setDataLines(entires);
+        
+        //invalid command
+        String invalidCommandOutput = "Invalid command parameter";
+        TextBuddy.CommandObject invalidSortCommand = new TextBuddy.CommandObject("Sort 4");
+        assertEquals(invalidCommandOutput, textBuddy.processSortCommand(invalidSortCommand));
+    }
 
 }
