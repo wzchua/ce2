@@ -335,6 +335,10 @@ public class TextBuddy {
             return sortEntries();
         }
     }
+    
+    String searchEntries(String keyword){
+        return "";
+    }
 
     String formatDataLine(int index, String dataLine) {        
         String formatted = String.format(DATA_LINE_MSG, (index + 1), dataLine);

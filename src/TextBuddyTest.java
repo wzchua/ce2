@@ -385,5 +385,17 @@ public class TextBuddyTest {
         
         //further cases can be found under sortEntiresTest()
     }
+    
+    @Test
+    public void searchEntriesTest(){
+        ArrayList<String> entries = new ArrayList<String>();
+        String emptyOutput = String.format("%s is empty, nothing to search", testFileName);
+        
+        TextBuddy textBuddy = new TextBuddy(testFileName);
+        textBuddy.setDataLines(entries);
+        
+        //empty list
+        assertEquals(emptyOutput, textBuddy.searchEntries("field"));
+    }
 
 }
