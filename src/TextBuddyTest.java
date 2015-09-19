@@ -341,6 +341,14 @@ public class TextBuddyTest {
         //empty list
         assertEquals(sortEmptyOutput, textBuddy.sortEntries());
         assertEquals(0, textBuddy.getDataLines().size());
-    }
+        
+        //non-empty list
+        textBuddy.addEntry("apple");
+        textBuddy.addEntry("zebra");
+        textBuddy.addEntry("pool");
+        String sortedOutput = String.format("%s sorted", testFileName);
+        
+        assertEquals(sortedOutput, textBuddy.sortEntries());
+   }
 
 }
