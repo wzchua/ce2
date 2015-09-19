@@ -52,34 +52,35 @@ public class TextBuddy {
      * @author Wz
      *
      */
-    private class CommandObject {
+    static class CommandObject {
         private String _command;
         private String _commandParameter;
         private int _commandParameterAsInteger;
 
-        private CommandObject(String commandMessage) {
+        CommandObject(String commandMessage) {
             boolean isSingleWord = (commandMessage.indexOf(' ') == -1);
             if (isSingleWord) {
-                _command = commandMessage;
+                _command = commandMessage.toLowerCase();
             } else {
                 _command = commandMessage.substring(0, commandMessage.indexOf(' '));
+                _command = _command.toLowerCase();
                 _commandParameter = commandMessage.substring(commandMessage.indexOf(' ') + 1);
             }
         }
 
-        private boolean hasParameters() {
+        boolean hasParameters() {
             return _commandParameter != null;
         }
 
-        private String getCommand() {
+        String getCommand() {
             return _command;
         }
 
-        private String getParameters() {
+        String getParameters() {
             return _commandParameter;
         }
 
-        private int getParameterAsInteger() {
+        int getParameterAsInteger() {
             return _commandParameterAsInteger;
         }
         
@@ -87,7 +88,7 @@ public class TextBuddy {
          * Tries to convert the parameter into an Integer
          * @return true if successful, else false;
          */
-        private boolean processParameterAsInteger() {
+        boolean processParameterAsInteger() {
             try {
                 _commandParameterAsInteger = Integer.parseInt(_commandParameter);
                 return true;
@@ -97,25 +98,54 @@ public class TextBuddy {
         }
     }
     
+
     /**
-     * Creates a new TextBuddy instance that stores the fileName, loads the file data, 
+     * Creates a new TextBuddy instance that stores the fileName, 
      * initializes scanner and formats the welcome message
      * 
      * @param fileName - string of the file where data would be stored into
      */
     public TextBuddy(String fileName) {
         _fileName = fileName;
-        _dataLines = getDataFromFile();
         _scanner = new Scanner(System.in);
-        WELCOME_MSG = String.format(PRE_FORMATTED_WELCOME_MSG, _fileName);        
+        WELCOME_MSG = String.format(PRE_FORMATTED_WELCOME_MSG, _fileName);
+    }    
+    
+    public void loadData(){
+        _dataLines = getDataFromFile();        
+    }
+    
+    public void setDataLines(ArrayList<String> data){
+        if(_dataLines == null){
+            _dataLines = new ArrayList<String>();
+        }
+        _dataLines.clear();
+        for(String line : data){
+            _dataLines.add(line);
+        }
+    }
+    
+    public void setDataLines(String[] data){
+        if(_dataLines == null){
+            _dataLines = new ArrayList<String>();
+        }
+        _dataLines.clear();
+        for(String line : data){
+            _dataLines.add(line);
+        }
+    }
+    
+    public ArrayList<String> getDataLines(){
+        return _dataLines;
     }
 
     public void start() {
+        loadData();
         printMessage(WELCOME_MSG);
         runCoreProcess();
     }
 
-    private void runCoreProcess() {
+    void runCoreProcess() {
         while (!_canExit) {
             processInput(requestForInput());
         }
@@ -124,7 +154,7 @@ public class TextBuddy {
     /**
      * This method does some tidying in preparation of the program closing.
      */
-    private void setupForExiting() {
+    void setupForExiting() {
         _canExit = true;
         _scanner.close();
         saveDataToFile(_dataLines);
@@ -135,7 +165,7 @@ public class TextBuddy {
      * Terminates the program if there is an exception in the filestream
      * @return an array list of each line in the file
      */
-    private ArrayList<String> getDataFromFile() {
+    ArrayList<String> getDataFromFile() {
         ArrayList<String> dataLines = new ArrayList<String>();
         try {
             File file = new File(_fileName);
@@ -166,7 +196,7 @@ public class TextBuddy {
      * @param dataLines
      *          is the array of data to be saved in the file
      */
-    private void saveDataToFile(ArrayList<String> dataLines) {
+    void saveDataToFile(ArrayList<String> dataLines) {
         try {
             FileWriter fw = new FileWriter(_fileName);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -183,13 +213,13 @@ public class TextBuddy {
 
     }
 
-    private String requestForInput() {
+    String requestForInput() {
         System.out.print(REQUEST_MSG);
         String input = _scanner.nextLine();
         return input;
     }
 
-    private void processInput(String input) {
+    void processInput(String input) {
         CommandObject cmd = new CommandObject(input);
         
         switch (cmd.getCommand()) {
@@ -197,85 +227,94 @@ public class TextBuddy {
                 setupForExiting();
                 break;
             case COMMAND_ADD :
-                processAddCommand(cmd);
+                printMessage(processAddCommand(cmd));
                 break;
             case COMMAND_DELETE :
-                processDeleteCommand(cmd);
+                printMessage(processDeleteCommand(cmd));
                 break;
             case COMMAND_CLEAR :
-                processClearCommand(cmd);
+                printMessage(processClearCommand(cmd));
                 break;
             case COMMAND_DISPLAY :
-                processDisplayCommand(cmd);
+                printMessage(processDisplayCommand(cmd));
                 break;
             default :
                 printMessage(INVALID_COMMAND_MSG);
         }
     }
 
-    private void processDisplayCommand(CommandObject cmd) {
+    String processAddCommand(CommandObject cmd) {
         if (cmd.hasParameters()) {
-            printMessage(INVALID_COMMAND_PARAMETER_MSG);            
+            return addEntry(cmd.getParameters());
         } else {
-            displayEntries();
+            return INVALID_COMMAND_PARAMETER_MSG;
         }
     }
 
-    private void processClearCommand(CommandObject cmd) {
-        if (cmd.hasParameters()) {
-            printMessage(INVALID_COMMAND_PARAMETER_MSG);
-        } else {
-            clearEntries();
-        }
-    }
-
-    private void processDeleteCommand(CommandObject cmd) {
+    String processDeleteCommand(CommandObject cmd) {
         if (cmd.hasParameters() && cmd.processParameterAsInteger()) {
             int index = cmd.getParameterAsInteger() - 1;
-            deleteEntry(index);
+            return deleteEntry(index);
         } else {
-            printMessage(INVALID_COMMAND_PARAMETER_MSG);
+            return INVALID_COMMAND_PARAMETER_MSG;
         }
     }
 
-    private void processAddCommand(CommandObject cmd) {
+    String processClearCommand(CommandObject cmd) {
         if (cmd.hasParameters()) {
-            addEntry(cmd.getParameters());
+            return INVALID_COMMAND_PARAMETER_MSG;
         } else {
-            printMessage(INVALID_COMMAND_PARAMETER_MSG);
+            return clearEntries();
         }
     }
 
-    private void addEntry(String dataLine) {
-        _dataLines.add(dataLine);
-        printMessage(String.format(ADD_ENTRY_MSG, _fileName, dataLine));
+    String processDisplayCommand(CommandObject cmd) {
+        if (cmd.hasParameters()) {
+            return INVALID_COMMAND_PARAMETER_MSG;            
+        } else {
+            return displayEntries();
+        }
     }
 
-    private void deleteEntry(int lineIndex) {
+    String addEntry(String dataLine) {
+        _dataLines.add(dataLine);
+        return String.format(ADD_ENTRY_MSG, _fileName, dataLine);
+    }
+
+    String deleteEntry(int lineIndex) {
         if (lineIndex < 0 || lineIndex >= _dataLines.size()) {
-            printMessage(INVALID_INDEX_MSG);
+            return INVALID_INDEX_MSG;
         } else {
             String lineDeleted = _dataLines.remove(lineIndex);
-            printMessage(String.format(DELETE_ENTRY_MSG, _fileName, lineDeleted));
+            return String.format(DELETE_ENTRY_MSG, _fileName, lineDeleted);
         }
     }
 
-    private void clearEntries() {
+    String clearEntries() {
         _dataLines.clear();
-        printMessage(String.format(CLEAR_ENTRIES_MSG, _fileName));
+        return String.format(CLEAR_ENTRIES_MSG, _fileName);
     }
 
-    private void displayEntries() {
+    String displayEntries() {
         int length = _dataLines.size();
+        String output;
+        StringBuilder stringBuilder = new StringBuilder();
         if (length == 0) {
-            printMessage(String.format(NO_ENTRIES_MSG, _fileName));
+            output = String.format(NO_ENTRIES_MSG, _fileName);
+        } else {
+            for (int i = 0; i < length; i++) {
+                stringBuilder.append(formatDataLine(i, _dataLines.get(i)));
+
+                if(i != length - 1){
+                    stringBuilder.append(System.lineSeparator());
+                }
+            }
+            output = stringBuilder.toString();
         }
-        for (int i = 0; i < length; i++) {
-            printMessage(formatDataLine(i, _dataLines.get(i)));
-        }
+        return output;
     }
 
-    private String formatDataLine(int index, String dataLine) {        
+    String formatDataLine(int index, String dataLine) {        
         String formatted = String.format(DATA_LINE_MSG, (index + 1), dataLine);
         return formatted;
     }
