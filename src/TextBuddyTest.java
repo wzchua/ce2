@@ -366,6 +366,12 @@ public class TextBuddyTest {
         String invalidCommandOutput = "Invalid command parameter";
         TextBuddy.CommandObject invalidSortCommand = new TextBuddy.CommandObject("Sort 4");
         assertEquals(invalidCommandOutput, textBuddy.processSortCommand(invalidSortCommand));
+        
+        //valid command, empty data
+        String sortEmptyOutput = String.format("%s is empty, nothing to sort", testFileName);
+        TextBuddy.CommandObject validSortCommand = new TextBuddy.CommandObject("Sort");
+        assertEquals(sortEmptyOutput, textBuddy.processSortCommand(validSortCommand));
+        
     }
 
 }
