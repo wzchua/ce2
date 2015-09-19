@@ -338,6 +338,14 @@ public class TextBuddyTest {
         assertEquals(sortedOutput + System.lineSeparator(), output);
         assertArrayEquals(sortedArray, textBuddy.getDataLines().toArray());
         outContent.reset();  
+        
+        //search input
+        String serachNotFoundOutput = "cat not found";
+        textBuddy.processInput("Search cat");
+        output = outContent.toString();
+        assertEquals(serachNotFoundOutput + System.lineSeparator(), output);
+        outContent.reset();
+        
     }
     
 
