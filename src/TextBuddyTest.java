@@ -378,12 +378,18 @@ public class TextBuddyTest {
         textBuddy.addEntry("zebra");
         textBuddy.addEntry("pool");
         String sortedOutput = String.format("%s sorted", testFileName);
-
         assertEquals(sortedOutput, textBuddy.sortEntries());
 
         // check actual data
         String[] sortedArray = { "apple", "pool", "zebra" };
         assertArrayEquals(sortedArray, textBuddy.getDataLines().toArray());
+        
+        //non-empty mixed casing list
+        textBuddy.addEntry("Mangoes");
+        assertEquals(sortedOutput, textBuddy.sortEntries());
+        String[] sortedArray2 = { "apple", "Mangoes", "pool", "zebra" };
+        assertArrayEquals(sortedArray2, textBuddy.getDataLines().toArray());
+        
     }
 
     @Test
