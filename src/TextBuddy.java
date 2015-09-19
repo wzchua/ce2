@@ -363,7 +363,11 @@ public class TextBuddy {
         }
     }
     String processSearchCommand(CommandObject cmd){
-        return INVALID_COMMAND_PARAMETER_MSG; 
+        if(cmd.hasParameters()){
+            return searchEntries(cmd.getParameters());
+        } else {
+            return INVALID_COMMAND_PARAMETER_MSG;
+        }
     }
 
     ArrayList<String> getListOfMatches(String keyword) {
