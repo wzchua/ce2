@@ -423,8 +423,8 @@ public class TextBuddyTest {
         
         //invalid command
         String invalidCommandOutput = "Invalid command parameter";
-        TextBuddy.CommandObject invalidSortCommand = new TextBuddy.CommandObject("Search 345143");
-        assertEquals(invalidCommandOutput, textBuddy.processSearchCommand(invalidSortCommand));
+        TextBuddy.CommandObject invalidSearchCommand = new TextBuddy.CommandObject("Search");
+        assertEquals(invalidCommandOutput, textBuddy.processSearchCommand(invalidSearchCommand));
 
         //populate list
         entries.add("fox on a field");
@@ -438,7 +438,7 @@ public class TextBuddyTest {
                 + "1. fox on a field" + System.lineSeparator() 
                 +"2. People riding horses on a field";
         TextBuddy.CommandObject validSearchCommand = new TextBuddy.CommandObject("Search field");
-        assertEquals(foundOutput, textBuddy.processSortCommand(validSearchCommand));
+        assertEquals(foundOutput, textBuddy.processSearchCommand(validSearchCommand));
         
         
     }
