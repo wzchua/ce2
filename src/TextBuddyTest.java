@@ -439,8 +439,8 @@ public class TextBuddyTest {
                 +"2. People riding horses on a field";
         TextBuddy.CommandObject validSearchCommand = new TextBuddy.CommandObject("Search field");
         assertEquals(foundOutput, textBuddy.processSearchCommand(validSearchCommand));
-        
-        
+
+        //further cases can be found under searchEntriesTest()        
     }
 
 }
