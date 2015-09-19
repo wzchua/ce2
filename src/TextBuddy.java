@@ -40,6 +40,7 @@ public class TextBuddy {
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_CLEAR = "clear";
     private static final String COMMAND_DISPLAY = "display";
+    private static final String COMMAND_SORT = "sort";
 
     private final String WELCOME_MSG;
     
@@ -241,6 +242,9 @@ public class TextBuddy {
             case COMMAND_DISPLAY :
                 printMessage(processDisplayCommand(cmd));
                 break;
+            case COMMAND_SORT:
+                printMessage(processSortCommand(cmd));
+            break;
             default :
                 printMessage(INVALID_COMMAND_MSG);
         }
