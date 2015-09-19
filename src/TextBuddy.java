@@ -19,6 +19,7 @@ import java.util.Scanner;
  *
  */
 public class TextBuddy {
+    private static final String NO_ENTRIES_TO_SORT_MSG = "%s is empty, nothing to sort";
     private static final String PRE_FORMATTED_WELCOME_MSG = "Welcome to TextBuddy. %1$s is ready for use";
     private static final String DATA_LINE_MSG = "%1$s. %2$s";
     private static final String NO_ENTRIES_MSG = "%1$s is empty";
@@ -314,7 +315,7 @@ public class TextBuddy {
         return output;
     }
     String sortEntries(){
-        return "";
+        return String.format(NO_ENTRIES_TO_SORT_MSG, _fileName);
     }
 
     String formatDataLine(int index, String dataLine) {        
