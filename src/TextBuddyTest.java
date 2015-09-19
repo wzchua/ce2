@@ -369,9 +369,9 @@ public class TextBuddyTest {
     
     @Test
     public void processSortCommandTest(){
-        ArrayList<String> entires = new ArrayList<String>();
+        ArrayList<String> entries = new ArrayList<String>();
         TextBuddy textBuddy = new TextBuddy(testFileName);
-        textBuddy.setDataLines(entires);
+        textBuddy.setDataLines(entries);
         
         //invalid command
         String invalidCommandOutput = "Invalid command parameter";
@@ -417,14 +417,15 @@ public class TextBuddyTest {
     
     @Test
     public void processSearchCommandTest(){
-        ArrayList<String> entires = new ArrayList<String>();
+        ArrayList<String> entries = new ArrayList<String>();
         TextBuddy textBuddy = new TextBuddy(testFileName);
-        textBuddy.setDataLines(entires);
+        textBuddy.setDataLines(entries);
         
         //invalid command
         String invalidCommandOutput = "Invalid command parameter";
         TextBuddy.CommandObject invalidSortCommand = new TextBuddy.CommandObject("Search 345143");
         assertEquals(invalidCommandOutput, textBuddy.processSearchCommand(invalidSortCommand));
+
     }
 
 }
