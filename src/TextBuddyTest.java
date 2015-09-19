@@ -436,7 +436,7 @@ public class TextBuddyTest {
         assertEquals(notFoundOutput, textBuddy.searchEntries("cat"));
 
         // non-empty, found
-        String foundOutput = "word: \"field\" found in 2 entires"
+        String foundOutput = "word: \"field\" found in 2 entries"
                 + System.lineSeparator() + "1. fox on a field" + System.lineSeparator()
                 + "2. People riding horses on a field";
         assertEquals(foundOutput, textBuddy.searchEntries("field"));
@@ -463,7 +463,7 @@ public class TextBuddyTest {
         textBuddy.setDataLines(entries);
 
         // valid command, non-empty data
-        String foundOutput = "word: \"field\" found in 2 entires"
+        String foundOutput = "word: \"field\" found in 2 entries"
                 + System.lineSeparator() + "1. fox on a field" + System.lineSeparator()
                 + "2. People riding horses on a field";
         TextBuddy.CommandObject validSearchCommand = new TextBuddy.CommandObject(
