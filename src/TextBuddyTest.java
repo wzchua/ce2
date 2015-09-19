@@ -327,6 +327,15 @@ public class TextBuddyTest {
         output = outContent.toString();
         assertEquals(invalidOutput + System.lineSeparator(), output);
         outContent.reset();
+        
+        //sort input
+        String sortedOutput = String.format("%s sorted", testFileName); 
+        String[] sortedArray = { "apple", "pool", "zebra" };
+        textBuddy.processInput("Sort");
+        output = outContent.toString();
+        assertEquals(sortedOutput + System.lineSeparator(), output);
+        assertArrayEquals(sortedArray, textBuddy.getDataLines().toArray());
+        outContent.reset();  
     }
     
 
