@@ -362,6 +362,9 @@ public class TextBuddy {
             return printOutput;
         }
     }
+    String processSearchCommand(CommandObject cmd){
+        return "";
+    }
 
     ArrayList<String> getListOfMatches(String keyword) {
         ArrayList<String> matchedList = new ArrayList<String>();

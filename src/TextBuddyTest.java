@@ -414,5 +414,17 @@ public class TextBuddyTest {
                             +"2. People riding horses on a field";
         assertEquals(foundOutput, textBuddy.searchEntries("field"));
     }
+    
+    @Test
+    public void processSearchCommandTest(){
+        ArrayList<String> entires = new ArrayList<String>();
+        TextBuddy textBuddy = new TextBuddy(testFileName);
+        textBuddy.setDataLines(entires);
+        
+        //invalid command
+        String invalidCommandOutput = "Invalid command parameter";
+        TextBuddy.CommandObject invalidSortCommand = new TextBuddy.CommandObject("Search 345143");
+        assertEquals(invalidCommandOutput, textBuddy.processSearchCommand(invalidSortCommand));
+    }
 
 }
