@@ -396,6 +396,17 @@ public class TextBuddyTest {
         
         //empty list
         assertEquals(emptyOutput, textBuddy.searchEntries("field"));
+        
+        //populate list
+        entries.add("fox on a field");
+        entries.add("People riding horses on a field");
+        entries.add("apples");
+        entries.add("green apples");
+        textBuddy.setDataLines(entries);
+        
+        //non-empty, not found
+        String notFoundOutput = "cat not found";
+        assertEquals(notFoundOutput, textBuddy.searchEntries("cat"));
     }
 
 }
