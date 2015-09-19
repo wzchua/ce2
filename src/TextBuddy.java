@@ -20,6 +20,7 @@ import java.util.Scanner;
  *
  */
 public class TextBuddy {
+    private static final String SEARCH_FAIL_MSG = "%s not found";
     private static final String SORTED_MSG = "%s sorted";
     private static final String NO_ENTRIES_TO_SEARCH_MSG = "%s is empty, nothing to search";
     private static final String NO_ENTRIES_TO_SORT_MSG = "%s is empty, nothing to sort";
@@ -338,7 +339,11 @@ public class TextBuddy {
     }
     
     String searchEntries(String keyword){
-        return String.format(NO_ENTRIES_TO_SEARCH_MSG, _fileName);
+        if(_dataLines.size() == 0){
+            return String.format(NO_ENTRIES_TO_SEARCH_MSG, _fileName);
+        } else {
+            return String.format(SEARCH_FAIL_MSG, keyword);
+        }
     }
 
     String formatDataLine(int index, String dataLine) {        
