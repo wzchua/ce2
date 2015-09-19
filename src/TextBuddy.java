@@ -363,7 +363,7 @@ public class TextBuddy {
         }
     }
     String processSearchCommand(CommandObject cmd){
-        return "";
+        return INVALID_COMMAND_PARAMETER_MSG; 
     }
 
     ArrayList<String> getListOfMatches(String keyword) {
