@@ -89,7 +89,6 @@ public class TextBuddyTest {
         assertEquals(message.toLowerCase(), cmdObj.getCommand());
 
         assertFalse(cmdObj.hasParameters());
-
         assertEquals(null, cmdObj.getParameters());
     }
 
@@ -145,81 +144,73 @@ public class TextBuddyTest {
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
 
-        assertArrayEquals(testData1, textBuddy.getDataLines().toArray());
+        //check add output and internal data
         assertEquals(addOutput, textBuddy.addEntry(addedLine));
         assertArrayEquals(dataAfterAdd, textBuddy.getDataLines().toArray());
     }
 
     @Test
     public void processAddCommandTest() {
-        String addedLine = "fourth line";
-        String addOutput = String.format("added to %1$s: \"%2$s\"", testFileName,
-                addedLine);
-        String invalidCommandOutput = "Invalid command parameter";
-
-        String[] dataAfterAdd = { testData1[0], testData1[1], testData1[2], addedLine };
-
-        TextBuddy.CommandObject validDeleteCommand = new TextBuddy.CommandObject("Add "
-                + addedLine);
-        TextBuddy.CommandObject invalidDeleteCommand = new TextBuddy.CommandObject("Add");
-
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
 
-        assertArrayEquals(testData1, textBuddy.getDataLines().toArray());
-        assertEquals(addOutput, textBuddy.processAddCommand(validDeleteCommand));
+        //invalid add command
+        String invalidCommandOutput = "Invalid command parameter";
+        TextBuddy.CommandObject invalidAddCommand = new TextBuddy.CommandObject("Add");
+        assertEquals(invalidCommandOutput,
+                textBuddy.processDeleteCommand(invalidAddCommand));
+        
+        //valid add command
+        String addedLine = "fourth line";
+        String addOutput = String.format("added to %1$s: \"%2$s\"", testFileName,
+                addedLine);
+        String[] dataAfterAdd = { testData1[0], testData1[1], testData1[2], addedLine };
+        TextBuddy.CommandObject validAddCommand = new TextBuddy.CommandObject("Add "
+                + addedLine);
+        assertEquals(addOutput, textBuddy.processAddCommand(validAddCommand));
         assertArrayEquals(dataAfterAdd, textBuddy.getDataLines().toArray());
 
-        assertEquals(invalidCommandOutput,
-                textBuddy.processDeleteCommand(invalidDeleteCommand));
     }
 
     @Test
     public void deleteEntryTest() {
-        String deleteOutput = String.format("deleted from %1$s: \"%2$s\"", testFileName,
-                "Second line");
-        String invalidIndexOutput = "Invalid index";
-
-        String[] dataAfterDelete = { "First line", "Third line" };
-
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
 
-        assertArrayEquals(testData1, textBuddy.getDataLines().toArray());
+        //invalid index
+        String invalidIndexOutput = "Invalid index";
+        assertEquals(invalidIndexOutput, textBuddy.deleteEntry(10));
+        
+        //valid index
+        String deleteOutput = String.format("deleted from %1$s: \"%2$s\"", testFileName,
+                "Second line");
+        String[] dataAfterDelete = { "First line", "Third line" };        
         assertEquals(deleteOutput, textBuddy.deleteEntry(1));
         assertArrayEquals(dataAfterDelete, textBuddy.getDataLines().toArray());
 
-        assertEquals(invalidIndexOutput, textBuddy.deleteEntry(10));
     }
 
     @Test
     public void processDeleteCommandTest() {
-        String deleteOutput = String.format("deleted from %1$s: \"%2$s\"", testFileName,
-                "Second line");
-        String invalidIndexOutput = "Invalid index";
-        String invalidCommandOutput = "Invalid command parameter";
-
-        String[] dataAfterDelete = { "First line", "Third line" };
-
-        TextBuddy.CommandObject validDeleteCommand = new TextBuddy.CommandObject(
-                "Delete 2");
-        TextBuddy.CommandObject invalidDeleteCommand1 = new TextBuddy.CommandObject(
-                "Delete");
-        TextBuddy.CommandObject invalidDeleteCommand2 = new TextBuddy.CommandObject(
-                "Delete 10");
-
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
-
-        assertArrayEquals(testData1, textBuddy.getDataLines().toArray());
+        
+        //invalid delete command
+        String invalidCommandOutput = "Invalid command parameter";
+        TextBuddy.CommandObject invalidDeleteCommand = new TextBuddy.CommandObject(
+                "Delete");
+        assertEquals(invalidCommandOutput,
+                textBuddy.processDeleteCommand(invalidDeleteCommand));
+                
+        //valid delete command
+        TextBuddy.CommandObject validDeleteCommand = new TextBuddy.CommandObject(
+                "Delete 2");
+        String deleteOutput = String.format("deleted from %1$s: \"%2$s\"", testFileName,
+                "Second line");
+        String[] dataAfterDelete = { "First line", "Third line" };        
         assertEquals(deleteOutput, textBuddy.processDeleteCommand(validDeleteCommand));
         assertArrayEquals(dataAfterDelete, textBuddy.getDataLines().toArray());
 
-        assertEquals(invalidCommandOutput,
-                textBuddy.processDeleteCommand(invalidDeleteCommand1));
-
-        assertEquals(invalidIndexOutput,
-                textBuddy.processDeleteCommand(invalidDeleteCommand2));
     }
 
     @Test
@@ -229,65 +220,69 @@ public class TextBuddyTest {
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
 
+        //check clear output and internal data
         assertEquals(clearOutput, textBuddy.clearEntries());
+        assertEquals(0, textBuddy.getDataLines().size());
     }
 
     @Test
     public void processClearCommandTest() {
-        String invalidCommandOutput = "Invalid command parameter";
-        String clearOutput = String.format("all content deleted from %1$s", testFileName);
-
-        TextBuddy.CommandObject validClearCommmand = new TextBuddy.CommandObject("Clear");
-        TextBuddy.CommandObject invalidClearCommand = new TextBuddy.CommandObject(
-                "Clear 3");
-
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
-
-        assertEquals(clearOutput, textBuddy.processClearCommand(validClearCommmand));
-
+        
+        //invalid clear command
+        String invalidCommandOutput = "Invalid command parameter";
+        TextBuddy.CommandObject invalidClearCommand = new TextBuddy.CommandObject(
+                "Clear 3");
         assertEquals(invalidCommandOutput,
                 textBuddy.processClearCommand(invalidClearCommand));
+        
+        //valid clear command
+        String clearOutput = String.format("all content deleted from %1$s", testFileName);
+        TextBuddy.CommandObject validClearCommmand = new TextBuddy.CommandObject("Clear");
+        assertEquals(clearOutput, textBuddy.processClearCommand(validClearCommmand));
+        assertEquals(0, textBuddy.getDataLines().size());
+
     }
 
     @Test
     public void displayEntriesTest() {
-        String displayOutput = "1. " + testData1[0] + System.lineSeparator() + "2. "
-                + testData1[1] + System.lineSeparator() + "3. " + testData1[2];
-        String displayEmptyOutput = testFileName + " is empty";
-
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
-
-        assertEquals(displayOutput, textBuddy.displayEntries());
-
+        
+        // empty
+        String displayEmptyOutput = testFileName + " is empty";
         textBuddy.clearEntries();
         assertEquals(displayEmptyOutput, textBuddy.displayEntries());
+        
+        // non-empty
+        textBuddy.setDataLines(testData1);
+        String displayOutput = "1. " + testData1[0] + System.lineSeparator() + "2. "
+                + testData1[1] + System.lineSeparator() + "3. " + testData1[2];
+        assertEquals(displayOutput, textBuddy.displayEntries());
+
     }
 
     @Test
     public void processDisplayCommandTest() {
-        String invalidCommandOutput = "Invalid command parameter";
-        String displayOutput = "1. " + testData1[0] + System.lineSeparator() + "2. "
-                + testData1[1] + System.lineSeparator() + "3. " + testData1[2];
-        String displayEmptyOutput = testFileName + " is empty";
-
-        TextBuddy.CommandObject validDisplayCommand = new TextBuddy.CommandObject(
-                "Display");
-        TextBuddy.CommandObject invalidDisplayCommand = new TextBuddy.CommandObject(
-                "Display 5");
-
         TextBuddy textBuddy = new TextBuddy(testFileName);
         textBuddy.setDataLines(testData1);
-
-        assertEquals(displayOutput, textBuddy.processDisplayCommand(validDisplayCommand));
-
+        
+        //invalid display command
+        String invalidCommandOutput = "Invalid command parameter";
+        TextBuddy.CommandObject invalidDisplayCommand = new TextBuddy.CommandObject(
+                "Display 5");
         assertEquals(invalidCommandOutput,
                 textBuddy.processDisplayCommand(invalidDisplayCommand));
+        
+        //valid display command
+        String displayOutput = "1. " + testData1[0] + System.lineSeparator() + "2. "
+                + testData1[1] + System.lineSeparator() + "3. " + testData1[2];
+        TextBuddy.CommandObject validDisplayCommand = new TextBuddy.CommandObject(
+                "Display");
+        assertEquals(displayOutput, textBuddy.processDisplayCommand(validDisplayCommand));
 
-        textBuddy.clearEntries();
-        assertEquals(displayEmptyOutput,
-                textBuddy.processDisplayCommand(validDisplayCommand));
+
     }
 
     @Test
